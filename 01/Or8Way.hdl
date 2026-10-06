@@ -11,5 +11,19 @@ CHIP Or8Way {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    Or(a=in[0], b=in[1], out=connection1);
+    Or(a=in[2], b=in[3], out=connection2);
+    Or(a=in[4], b=in[5], out=connection3);
+    Or(a=in[6], b=in[7], out=connection4);
+
+    // Bind the 4 to 2 
+
+    Or(a=connection1, b=connection2, out=binded1);
+    Or(a=connection3, b=connection4, out=binded2);
+
+    // Passes all eight tables together.
+    Or(a=binded1, b=binded2, out=out);
+
+
+
 }

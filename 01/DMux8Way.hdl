@@ -18,5 +18,20 @@ CHIP DMux8Way {
     OUT a, b, c, d, e, f, g, h;
 
     PARTS:
-    //// Replace this comment with your code.
+    // All 8 before split
+    DMux(in=in , sel=sel[2], a=Half1, b=Half2);
+    
+    // A B C D Side 
+    DMux(in=Half1 , sel=sel[1], a=AB, b=CD);
+
+    DMux(in=AB , sel=sel[0], a=a, b=b);
+    DMux(in=CD, sel=sel[0], a=c, b=d );
+    
+     // E F G H Side 
+    DMux(in=Half2 , sel=sel[1], a=EF, b=GH);
+
+    DMux(in=EF , sel=sel[0], a=e, b=f);
+    DMux(in=GH, sel=sel[0], a=g, b=h );
+
+
 }
