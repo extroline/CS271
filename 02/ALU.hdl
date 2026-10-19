@@ -41,5 +41,35 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    // Zx selects X
+    Mux16(a=x, b=false, sel=zx, out=zeroX);
+    // Nx if true = NotX 
+    Not16(in=zeroX, out=notX);
+    Mux16(a=zeroX, b=notX, sel=nx, out=aproX);
+    
+    // ny = 1 y = 0 
+    Mux16(a=y, b=false, sel=zy, out=zeroY);
+     // Zy if true = NotY 
+    Not16(in=zeroY, out=notY);
+    Mux16(a=zeroY, b=notY, sel=ny, out=aproY);
+
+    // F == 1 x+y 2 complment or something
+    Add16(a=aproX, b=aproY, out=XaddedY );
+    And16(a=aproX, b=aproY, out=XandY);
+    Mux16(a=XandY, b=XaddedY, sel=f, out=OUTER);
+
+
+    // no == 1 
+    Not16(in=OUTER, out=NotOut);
+    // check if pos or negative to see if out < 0 in the 15 slot 
+    Mux16(a=OUTER, b=NotOut, sel=no, out=out, out[0..7]=left, out[8..15]=right,out[15]=ng);
+    
+    // Zr = 1 Out == 0   
+    Or8Way(in=left, out=left1);
+    Or8Way(in=right, out=right1);
+    Or(a=left1,b=right1, out=notzr);
+    Not(in=notzr, out=zr);
+
+
+
 }
