@@ -9,8 +9,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdint.h>
 
 #define MAX_LINE_LENGTH  200
+#define const  MAX_LABEL_LENGTH MAX_LINE_LENGTH - 2
+#define typedef int16_t hack_addr;
+#define typedef int16_t opcode;
+
 
 /** function prototypes **/
 char *strip(char *s);
