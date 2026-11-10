@@ -1,51 +1,51 @@
 (LOOP)
-    @i
-    M=0
-
     @KBD
     D=M         
 
-    @KEY_PRESSED
+    @Black
     D;JGT  
 
-    @NO_KEY
-    0;JMP
-
-(KEY_PRESSED)
-    @16383
+(White)
+    @color
     M=0
-    @i
-    M=M+1
-    D=M
-    @16383
-    A=D+A
+    @SCREEN 
+    D=A
+    @ADDR 
+    M=D
+
+    @DRAW
+    D;JMP
+
+(Black)
+
+    @color
     M=-1
+    @SCREEN 
+    D=A
+    @ADDR 
+    M=D
 
-    @KBD
-    D=M
-    @KEY_PRESSED
-    D;JGT
+    @DRAW
+    D;JMP
 
-(NO_KEY)
-    @16383
-    M=0
-    @i
+(DRAW)
+    @color 
+    D=M 
+
+    @ADDR 
+    A=M
+    M=D
+
+    @ADDR 
     M=M+1
-    D=M
-    @16383
-    A=D+A
-    M=0
-    @KBD
-    D=M
-    @KEY_PRESSED
-    D;JGT
 
     @KBD
-    D=M
-    @NO_KEY
-    0;JMP
+    D=A 
+    @ADDR
+    D=D-M
 
+    @DRAW
+    D;JGT 
 
-(END)
-    @LOOP
+    @LOOP 
     0;JMP
