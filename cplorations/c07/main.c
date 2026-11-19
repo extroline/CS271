@@ -6,6 +6,7 @@
  * 
  ****************************************/
 #include "parser.h"
+#include "symtable.h"
 
 int main(int argc, const char *argv[])
 {		
@@ -22,6 +23,7 @@ int main(int argc, const char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	parse(fin);
+	symtable_print_labels();
 	fclose(fin);
 
 			
