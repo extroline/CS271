@@ -5,16 +5,16 @@
  * [TERM] FALL 2026
  * 
  ****************************************/
+#ifndef __PARSER_H__
+#define __PARSER_H__
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h> 
 #include <stdint.h>
-#include <hack.h>
+#include "hack.h"
 
-#ifndef __PARSER_H__
-#define __PARSER_H__
 #define MAX_LINE_LENGTH  200
 #define MAX_HACK_ADDRESS INT16_MAX
 #define MAX_INSTRUCTIONS MAX_HACK_ADDRESS
@@ -48,7 +48,7 @@ typedef struct c_instruction{
 
 typedef struct a_instruction{
     union{
-        int hack_addr;
+        hack_addr address;
         char* label;
     };
     bool is_addr;
@@ -56,14 +56,17 @@ typedef struct a_instruction{
 
 typedef struct instruction{
     union{
-        a_instruction;
-        c_instruction;
+        a_instruction a;
+        c_instruction c;
     };
     instr_type type;
 } instruction;
 
 
-void add_predefined_symbols()
+void add_predefined_symbols();
+
+
+bool parse_A_instruction(const char *line, a_instruction *instr);
 
 #endif
 

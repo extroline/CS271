@@ -2,6 +2,7 @@ CC = gcc
 CFLAGS = -Wall -I.
 LDFLAGS = 
 OBJFILES = main.o parser.o symtable.o error.o
+DEPS = hack.h parser.h symtable.h error.h
 TARGET = main
 
 all: $(TARGET)

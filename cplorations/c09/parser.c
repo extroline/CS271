@@ -1,5 +1,5 @@
 /****************************************
- * C-ploration 5 for CS 271
+ * C-ploration 9 for CS 271
  *
  * [NAME] Dakoa
  * [TERM] FALL $2026$
@@ -9,6 +9,7 @@
 #include "symtable.h"
 #include "error.h"
 #include <stdlib.h>
+#include "hack.h"
 /* Function: strip
  * -------------
  * remove whitespace and comments from a line
@@ -48,6 +49,8 @@ char *strip(char *s)
  */
 void parse(FILE *file)
 {
+	instruction instr;
+
 	char line[MAX_LINE_LENGTH] = {0};
 	//hack_addr instr_num = 0;
 
@@ -55,6 +58,7 @@ void parse(FILE *file)
 	unsigned int line_num = 0;
 	unsigned int instr_num = 0;
 
+	add_predefined_symbols();
 	while (fgets(line, sizeof(line), file))
 	{
 		line_num++;
@@ -73,6 +77,12 @@ void parse(FILE *file)
 		if (is_Atype(line))
 		{
 			inst_type = 'A';
+
+			if (!parse_A_instruction(line, &instr.a))
+			{
+    			exit_program(EXIT_INVALID_A_INSTR, line_num, line);
+ 			}
+ 			instr.type = a_type_instruction;
 		}
 		if (is_label(line))
 		{
@@ -104,7 +114,7 @@ void parse(FILE *file)
 
 		}
 		// printf("%c  %s\n", inst_type, line);
-		printf("%u: %c  %s\n", instr_num, inst_type, line);
+		///printf("%u: %c  %s\n", instr_num, inst_type, line);
 		instr_num++;
 	}
 }
@@ -166,7 +176,38 @@ bool is_Ctype(const char *line)
 }
 
 void add_predefined_symbols(){
-	for (int in = 0; i < NUM_PREDEFINED_SYMBOLS; i++){
-		predefined_symbol = predefined_symbol[i];
+	for (int i = 0; i < NUM_PREDEFINED_SYMBOLS; i++){
+		predefined_symbol sym = predefined_symbols[i];
+		symtable_insert(sym.name, sym.address);
+
 	}
-};
+}
+
+bool parse_A_instruction(const char *line, a_instruction *instr)
+{
+	char *s = malloc(strlen(line));	
+	
+	strcpy(s, line + 1);
+
+	char *s_end = NULL;
+	long result = strtol(s, &s_end, 10);
+
+	if(s == s_end)
+	{
+		instr->label = malloc(strlen(line));
+		
+		strcpy(instr->label, s);
+		instr->is_addr = false;
+	}
+	else if(*s_end != 0)
+	{
+		return false;
+	}
+	else
+	{
+		instr->address = result;
+		instr->is_addr = true;
+	}
+	return true;
+
+}

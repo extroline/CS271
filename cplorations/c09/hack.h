@@ -1,3 +1,6 @@
+#ifndef __HACK_H__
+#define __HACK_H__
+
 #include <stdint.h>
 #define NUM_PREDEFINED_SYMBOLS 23
 
@@ -30,7 +33,7 @@ typedef enum symbol_id {
 
 typedef struct predefined_symbol{
 
-    char *name[50+1];
+    char name[50+1];
     int16_t address; 
 
 
@@ -62,4 +65,4 @@ static const predefined_symbol predefined_symbols[NUM_PREDEFINED_SYMBOLS] = {
     {"THAT", SYM_THAT},
 
 };
-
+#endif
